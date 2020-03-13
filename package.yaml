@@ -1,0 +1,79 @@
+---
+
+name:
+    wai-middleware-clacks
+version:
+    0.1.0.0
+github:
+    prikhi/wai-middleware-clacks
+homepage:
+    https://github.com/prikhi/wai-middleware-clacks#readme
+license:
+    BSD3
+license-file:
+    LICENSE
+author:
+    Pavan Rikhi
+maintainer:
+    pavan.rikhi@gmail.com
+copyright:
+    2020 Pavan Rikhi
+category:
+    Web, Wai
+extra-source-files:
+    - README.md
+    - CHANGELOG.md
+
+
+synopsis:
+    Short, one-line summary of project here.
+
+description: |
+    Longer description of package here.
+
+    Maybe include a simple usage example.
+
+
+ghc-options:
+    - -Wall
+when:
+    condition:
+        impl(ghc >= 8.0)
+    then:
+        ghc-options:
+            - -Wcompat
+            - -Wincomplete-record-updates
+            - -Wincomplete-uni-patterns
+            - -Wredundant-constraints
+    else:
+        ghc-options:
+            - -fwarn-incomplete-record-updates
+            - -fwarn-incomplete-uni-patterns
+
+
+dependencies:
+    - base >= 4.3 && < 5
+    - base-compat-batteries
+
+
+library:
+    source-dirs:
+        src
+    dependencies:
+        []
+
+tests:
+    wai-middleware-clacks-test:
+        main: Spec.hs
+        source-dirs:
+            tests
+        ghc-options:
+            - -threaded
+            - -rtsopts
+            - -with-rtsopts "-N -T"
+        dependencies:
+            - wai-middleware-clacks
+            - hedgehog
+            - tasty
+            - tasty-hedgehog
+            - tasty-hunit
