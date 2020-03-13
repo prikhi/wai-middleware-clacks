@@ -77,7 +77,7 @@ tests:
             - -with-rtsopts "-N -T"
         dependencies:
             - wai-middleware-clacks
-            - hedgehog
+            - http-types
             - tasty
-            - tasty-hedgehog
-            - tasty-hunit
+            - tasty-wai
+            - wai

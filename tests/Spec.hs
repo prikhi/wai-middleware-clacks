@@ -1,34 +1,46 @@
-import           Hedgehog
+{-# LANGUAGE OverloadedStrings #-}
+import           Data.List.NonEmpty.Compat      ( NonEmpty(..) )
 import           Test.Tasty
-import           Test.Tasty.HUnit
-import           Test.Tasty.Hedgehog
+import           Test.Tasty.Wai
+import           Network.HTTP.Types             ( status200 )
+import           Network.Wai                    ( Application
+                                                , responseLBS
+                                                )
 
-import qualified Hedgehog.Gen                  as Gen
-import qualified Hedgehog.Range                as Range
-
+import           Network.Wai.Middleware.Clacks
 
 main :: IO ()
 main = defaultMain tests
 
 
 tests :: TestTree
-tests = testGroup "Tests" [unitTests, properties]
-
-
-unitTests :: TestTree
-unitTests = testGroup "Unit Tests" [testCase "2+2 = 4" testAddition]
+tests = testGroup "Wai Tests" [testSingle, testMultiple, testExisting]
   where
-    testAddition :: Assertion
-    testAddition = (2 + 2) @?= (4 :: Integer)
+    testSingle :: TestTree
+    testSingle = testWai (simpleApp gnuTerryPratchett) "Single Message" $ do
+        get "42" >>= assertHeader clacksHeaderName "GNU Terry Pratchett"
+    testMultiple :: TestTree
+    testMultiple =
+        let settings = Clacks $ "GNU Terry Pratchett" :| ["GNU Ada Lovelace"]
+        in  testWai (simpleApp settings) "Multiple Messages"
+                $   get "9001"
+                >>= assertHeader clacksHeaderName
+                                 "GNU Terry Pratchett,GNU Ada Lovelace"
+    testExisting :: TestTree
+    testExisting =
+        testWai (existingHeaderApp gnuTerryPratchett) "Existing Clacks Header"
+            $ do
+                  get "neko" >>= assertHeader
+                      clacksHeaderName
+                      "GNU Ada Lovelace,GNU Terry Pratchett"
 
 
-properties :: TestTree
-properties = testGroup
-    "Properties"
-    [testProperty "Addition is Communative" testAdditionCommunative]
-  where
-    testAdditionCommunative :: Property
-    testAdditionCommunative = property $ do
-        let genInt = Gen.int $ Range.linear 0 9001
-        (a, b) <- forAll $ (,) <$> genInt <*> genInt
-        (a + b) === (b + a)
+simpleApp :: Clacks -> Application
+simpleApp settings =
+    clacks settings $ \_ cb -> cb $ responseLBS status200 [] "Hello World"
+
+existingHeaderApp :: Clacks -> Application
+existingHeaderApp settings = clacks settings $ \_ cb -> cb $ responseLBS
+    status200
+    [(clacksHeaderName, "GNU Ada Lovelace")]
+    "Hello World"

@@ -3,6 +3,7 @@ module Network.Wai.Middleware.Clacks
     ( clacks
     , Clacks(..)
     , gnuTerryPratchett
+    , clacksHeaderName
     )
 where
 
@@ -24,8 +25,8 @@ import qualified Data.List                     as L
 import qualified Data.Text                     as T
 
 
--- | A "Network.Wai" 'Middleware' that adds a @X-Clacks-Overhead@ header containing
--- the messages in the 'Clacks' configuration.
+-- | A "Network.Wai" 'Middleware' that adds a @X-Clacks-Overhead@ header
+-- containing the messages in the 'Clacks' configuration.
 clacks :: Clacks -> Middleware
 clacks settings = modifyResponse $ mapResponseHeaders addHeader
   where
@@ -33,12 +34,12 @@ clacks settings = modifyResponse $ mapResponseHeaders addHeader
     headerContents =
         encodeUtf8 . T.intercalate "," . toList $ clacksMessages settings
     addHeader :: ResponseHeaders -> ResponseHeaders
-    addHeader hs = case L.find ((== headerName) . fst) hs of
-        Nothing      -> (headerName, headerContents) : hs
-        Just (_, "") -> (headerName, headerContents) : hs
+    addHeader hs = case L.find ((== clacksHeaderName) . fst) hs of
+        Nothing      -> (clacksHeaderName, headerContents) : hs
+        Just (_, "") -> (clacksHeaderName, headerContents) : hs
         Just (name, contents) ->
             (name, contents <> "," <> headerContents)
-                : filter ((/= headerName) . fst) hs
+                : filter ((/= clacksHeaderName) . fst) hs
 
 -- | Configuration for the Clacks WAI Middleware.
 newtype Clacks =
@@ -54,5 +55,5 @@ gnuTerryPratchett = Clacks $ "GNU Terry Pratchett" :| []
 
 
 -- | The name of the Clacks header.
-headerName :: HeaderName
-headerName = CI.mk "X-Clacks-Overhead"
+clacksHeaderName :: HeaderName
+clacksHeaderName = CI.mk "X-Clacks-Overhead"
