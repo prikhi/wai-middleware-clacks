@@ -30,8 +30,8 @@
 ## Usage
 
 To use this package to keep the legacy of Terry Pratchett alive, simply pass
-your wai application to @clacks gnuTerryPratchett@ before passing it to the
-@run@ function:
+your wai application to `clacks gnuTerryPratchett` before passing it to the
+`run` function:
 
 ```haskell
 import Network.Wai.Handler.Warp (run)
