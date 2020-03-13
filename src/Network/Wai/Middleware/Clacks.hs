@@ -1,5 +1,35 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-|
+The @Clacks@ middleware adds a @X-Clacks-Overhead@ header to every response
+served by a Wai server.
+
+To use this package to keep the legacy of Terry Pratchett alive, simply
+pass your wai application to @clacks gnuTerryPratchett@ before passing it
+to the @run@ function:
+
+> import Network.Wai.Handler.Warp (run)
+> import Network.Wai.Middleware.Clacks (clacks, gnuTerryPratchett)
+>
+> import MyLib.App (myApp)
+>
+> main :: IO ()
+> main = run 8080 $ clacks gnuTerryPratchett myApp
+
+You can use the 'Clacks' type to build a custom configuration for the
+'clacks' function, allowing you to pass anything into the header:
+
+> import Data.List.NonEmpty (NonEmpty(..))
+> import Network.Wai (Middleware)
+> import Network.Wai.Middleware.Clacks (Clacks(..), clacks)
+>
+> myClacks :: Middleware
+> myClacks = clacks $ Clacks $ "GNU Ada Lovelace" :| ["GNU Hoban Washburne", "GNU Shephard Book"]
+
+For more information about the Clacks or the @X-Clacks-Overhead@ header,
+check out the <http://www.gnuterrypratchett.com GNU Terry Pratchett website>.
+
+-}
 module Network.Wai.Middleware.Clacks
     ( clacks
     , Clacks(..)
