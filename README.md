@@ -14,9 +14,9 @@
 > speed of light" using standardized codes. Three of these codes are of
 > particular import:
 >
-> G: send the message on
-> N: do not log the message
-> U: turn the message around at the end of the line and send it back again
+> * G: send the message on
+> * N: do not log the message
+> * U: turn the message around at the end of the line and send it back again
 >
 > When Dearheart's son John died due to an accident while working on a clacks
 > tower, Dearheart inserted John's name into the overhead of the clacks with a
