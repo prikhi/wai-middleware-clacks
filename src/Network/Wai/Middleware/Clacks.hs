@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Network.Wai.Middleware.Clacks
     ( clacks
@@ -6,6 +7,8 @@ module Network.Wai.Middleware.Clacks
     , clacksHeaderName
     )
 where
+
+import           Prelude.Compat
 
 import           Data.List.NonEmpty.Compat      ( NonEmpty(..)
                                                 , toList
