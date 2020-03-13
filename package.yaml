@@ -60,7 +60,11 @@ library:
     source-dirs:
         src
     dependencies:
-        []
+        - bytestring
+        - case-insensitive
+        - http-types
+        - text
+        - wai
 
 tests:
     wai-middleware-clacks-test:
