@@ -87,11 +87,11 @@ library:
     source-dirs:
         src
     dependencies:
-        - bytestring
-        - case-insensitive
-        - http-types
-        - text
-        - wai
+        - bytestring < 1
+        - case-insensitive < 2
+        - http-types < 1
+        - text < 2
+        - wai < 4
 
 tests:
     wai-middleware-clacks-test:
