@@ -90,7 +90,7 @@ library:
         - bytestring < 1
         - case-insensitive < 2
         - http-types < 1
-        - text < 2
+        - text < 3
         - wai < 4
 
 tests:

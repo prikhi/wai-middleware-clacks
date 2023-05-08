@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## master
+
+* Bump `text` upper bounds
+
 ## v0.1.0.1
 
 * Add upper bounds to library dependencies
